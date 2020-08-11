@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <button id="btnBox">+ Quadrado</button>
+    </div>
+
+    <script>
+      var button = document.querySelector("button#btnBox");
+
+      button.onclick = createBox;
+
+      function createBox() {
+        const containerElement = document.querySelector("#app");
+        const box = document.createElement("div");
+
+        box.style.width = "100px";
+        box.style.height = "100px";
+        box.style.margin = "12px";
+        box.style.backgroundColor = "#272727";
+
+        box.onmouseover = () => {
+          console.log("Em cima");
+          box.style.backgroundColor = getRandomColor();
+        };
+
+        containerElement.appendChild(box);
+      }
+
+      function getRandomColor() {
+        var letters = "0123456789ABCDEF";
+        var color = "#";
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+    </script>
+  </body>
+</html>

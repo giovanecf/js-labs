@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API | Repos do GitHub</title>
+  </head>
+  <body>
+    <div>
+      <input type="text" id="input" /> <button id="button">Buscar Dados</button>
+    </div>
+
+    <div id="listDiv">
+      <img id="img" />
+      <ul id="ul"></ul>
+    </div>
+    <script>
+      var input = document.querySelector("#input");
+      var button = document.querySelector("#button");
+      var img = document.querySelector("#img");
+      var ul = document.querySelector("#ul");
+
+      var reposResponse = [];
+      var userResponse = [];
+
+      var minhaPromise = function () {
+        return new Promise((resolve, reject) => {
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", url);
+          xhr.send(null);
+
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+              if (xhr.status === 200) {
+                resolve(JSON.parse(xhr.responseText));
+              }
+              if (xhr.status === 404) {
+                reject("Erro na requisição");
+              }
+            }
+          };
+        }, url);
+      };
+
+      var addLI = (text) => {
+        let itemList = document.createElement("li");
+        let textElement = document.createTextNode(text);
+
+        itemList.appendChild(textElement);
+        ul.appendChild(itemList);
+      };
+
+      var responseHandler = () => {
+        ul.innerHTML = "";
+        var repos = reposResponse.map((repo) => {
+          return repo.name;
+        });
+
+        repos.map((element) => {
+          addLI(element);
+        });
+
+        if (userResponse.avatar_url !== "") {
+          img.setAttribute("src", userResponse.avatar_url);
+        }
+      };
+
+      var errorReponseHandler = (error) => {
+        ul.innerHTML = "";
+        addLI(error + ": User doesn't exists");
+        img.setAttribute("src", "");
+      };
+
+      var buscarRepos = () => {
+        if (input.value === "") {
+          input.placeholder = "Digite um nome de usuário";
+          return;
+        }
+
+        addLI("Loading...");
+
+        url = "https://api.github.com/users/" + input.value;
+
+        minhaPromise()
+          .then((response) => {
+            userResponse = response;
+
+            responseHandler();
+
+            url = "https://api.github.com/users/" + input.value + "/repos";
+
+            minhaPromise()
+              .then((response) => {
+                reposResponse = response;
+                responseHandler();
+              })
+
+              .catch((error) => {
+                console.warn(error);
+              });
+          })
+          .catch((error) => {
+            errorReponseHandler(error);
+          });
+      };
+
+      button.onclick = () => buscarRepos();
+    </script>
+  </body>
+</html>

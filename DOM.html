@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <input type="text" name="nome" id="nome" />
+      <button type="submit" class="botao" onclick="mudarTag">Adicionar</button>
+    </div>
+
+    <script>
+      function trabalhandoComDom() {
+        var inputElement = document.getElementById("nome");
+        var inputElementByQuery = document.querySelector("body div#app input");
+        var inputElementByQuery2 = document.querySelector("input[name=nome]");
+        var button = document.querySelector("button.botao");
+        inputElementByQuery2.placeholder = "PLACEHOLDER";
+        button.onclick = () => {
+          alert("... " + inputElementByQuery2.value + " ...");
+        };
+      }
+      function criandoERemovendoElemento() {
+        var linkElement = document.createElement("a");
+        linkElement.setAttribute("href", "www.youtube.com");
+
+        var textElement = document.createTextNode("Acessar YOUTUBE");
+        linkElement.appendChild(textElement); //Criando o elemento que fica entre a TAG <a>textElement</a>
+
+        var containerElement = document.querySelector("#app");
+        containerElement.appendChild(linkElement); //Colocando o <a>(linkElement) dentro da <div id="app">
+
+        var button = document.querySelector("button.botao");
+        containerElement.removeChild(button);
+      }
+    </script>
+  </body>
+</html>

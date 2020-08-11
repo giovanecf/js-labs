@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" id="inputNome" />
+    <button id="btnNome">Adicionar</button>
+
+    <ul id="list"></ul>
+
+    <script>
+      var nomes = ["Diego", "Gabriel", "Lucas"];
+      var btnNome = document.querySelector("#btnNome");
+      var list = document.querySelector("#list");
+      var inputNome = document.querySelector("#inputNome");
+
+      const setNamesInList = (nomes) => {
+        var lis = document.querySelectorAll("#list li");
+
+        if (inputNome.value !== "") {
+          nomes.push(inputNome.value);
+        }
+
+        //lis.forEach((li) => { list.removeChild(li); });
+        list.innerHTML = "";
+
+        nomes.map((nome) => {
+          let itemList = document.createElement("li");
+          let textElement = document.createTextNode(nome);
+
+          itemList.appendChild(textElement);
+          list.appendChild(itemList);
+        });
+
+        inputNome.value = "";
+      };
+
+      btnNome.onclick = () => setNamesInList(nomes);
+      window.onload = setNamesInList(nomes);
+    </script>
+  </body>
+</html>
